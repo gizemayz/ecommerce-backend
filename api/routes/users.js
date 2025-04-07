@@ -28,26 +28,31 @@ router.post("/adduser", verifyAdmin, async (req, res, next) => {
 });
 
 router.delete("/removeuser/:id", verifyAdmin, async (req, res) => {
+  try{
     const { id } = req.params;
-      const removeUser = await User.findById(id);
+    const removeUser = await User.findById(id);
+    if (!removeUser) {
+        return res.status(404).json({ message: "user not found" });
+    }
+    const username = removeUser.username;
 
-      if (!removeUser) {
-          return res.status(404).json({ message: "User not found" });
-      }
+    await User.findByIdAndDelete(id);
+    await Item.updateMany(
+        {},
+        { $pull: { reviews: { username: username } } }
+    );
 
-      const username = removeUser.username;
-
-      await User.findByIdAndDelete(id);
-      await Item.updateMany(
-          {},
-          { $pull: { reviews: { username: username } } }
-      );
-
-      await Item.updateMany(
-          {},
-          { $unset: { [`ratings.${username}`]: "" } }
-      );
-      res.status(200).json({ message: "User deleted successfully" });
+    await Item.updateMany(
+        {},
+        { $unset: { [`ratings.${username}`]: "" } }
+    );
+    res.status(200).json({ message: "User deleted successfully" });
+  }
+  catch (error) {
+    console.error("error deleting user:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+      
   
   
 });
