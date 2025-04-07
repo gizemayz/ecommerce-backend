@@ -4,7 +4,6 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "vercel-build": "echo 'ready'",
     "start": "node index"
   },
   "keywords": [],

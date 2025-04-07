@@ -1,5 +1,4 @@
 const express = require("express");
-const serverless = require("serverless-http");
 const cors = require("cors");
 const mongoose = require("mongoose");
 require("dotenv").config();
@@ -16,7 +15,9 @@ app.use("/items", require("./routes/items"));
 app.use("/users", require("./routes/users"));
 app.use("/authentication", require("./routes/authentication"));
 
-app.get("/", (req, res) => res.send("hellü from backend"));
+app.get("/", (req, res) => res.send("Hello from backend"));
 
-module.exports = app;
-module.exports.handler = serverless(app); 
+const PORT = process.env.PORT || 8000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
