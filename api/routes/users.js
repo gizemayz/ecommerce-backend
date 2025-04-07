@@ -47,6 +47,7 @@ router.delete("/removeuser/:id", verifyAdmin, async (req, res) => {
           {},
           { $unset: { [`ratings.${username}`]: "" } }
       );
+      res.status(200).json({ message: "User deleted successfully" });
   
   
 });
