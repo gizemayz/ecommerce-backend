@@ -16,7 +16,7 @@ app.use("/items", require("./routes/items"));
 app.use("/users", require("./routes/users"));
 app.use("/authentication", require("./routes/authentication"));
 
-app.get("/", (req, res) => res.send("Backend Root is working"));
+app.get("/", (req, res) => res.send("hellü from backend"));
 
-module.exports = app; 
-module.exports.handler = serverless(app);
+module.exports = app;
+module.exports.handler = serverless(app); 
